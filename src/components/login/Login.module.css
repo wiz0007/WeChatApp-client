@@ -1,0 +1,247 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.loginWrapper {
+  display: flex;
+  flex-direction: center;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.loginCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  max-width: 1100px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+@media (max-width: 900px) {
+  .loginCard {
+    flex-direction: column-reverse;
+  }
+}
+
+.leftPanel {
+  flex: 1;
+  padding: 3rem 2.5rem;
+}
+@media (max-width: 600px) {
+  .leftPanel {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  color: #4f46e5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.title span {
+  color: #9333ea;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.6rem;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  transition: border 0.2s ease;
+}
+.inputGroup:focus-within {
+  border-color: #4f46e5;
+}
+.inputGroup input {
+  font-size: 1rem;
+  color: #111827;
+  font-family: "Roboto", sans-serif;
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.inputGroup .icon {
+  color: #6b7280;
+  font-size: 1.2rem;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(90deg, #4f46e5, #9333ea);
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+  transition: all 0.3s ease;
+}
+.button:hover {
+  background: linear-gradient(90deg, #4338ca, #7e22ce);
+}
+.button .btnIcon {
+  margin-right: 0.5rem;
+}
+
+/* New toggle for Login / Register */
+.switchMode {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+}
+.switchMode span {
+  color: #4f46e5;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.3rem;
+  transition: all 0.2s ease;
+}
+.switchMode span:hover {
+  text-decoration: underline;
+}
+
+/* Right panel / phone mockup */
+.rightPanel {
+  display: flex;
+  flex-direction: center;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  background: linear-gradient(180deg, #ede9fe, #e0e7ff);
+  padding: 2rem;
+  position: relative;
+}
+@media (max-width: 900px) {
+  .rightPanel {
+    padding: 1.5rem;
+  }
+}
+
+.phoneMockup {
+  background: #fff;
+  border-radius: 1.5rem;
+  padding: 1rem;
+  width: 250px;
+  height: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.chatBubble {
+  border-radius: 1rem;
+  padding: 0.6rem 1rem;
+  margin: 0.4rem 0;
+  max-width: 75%;
+  font-size: 0.9rem;
+}
+.chatBubble.incoming {
+  background: #f3f4f6;
+  align-self: flex-start;
+}
+.chatBubble.outgoing {
+  background: #4f46e5;
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.typing {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.6rem;
+}
+.typing span {
+  width: 8px;
+  height: 8px;
+  background: #d1d5db;
+  border-radius: 50%;
+  animation: typing 1s infinite ease-in-out;
+}
+.typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+/* Floating emojis */
+.floater {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.8;
+  animation: float 4s ease-in-out infinite;
+}
+.floater.floater1 {
+  top: 20px;
+  left: 25px;
+  animation-delay: 0s;
+}
+.floater.floater2 {
+  bottom: 40px;
+  right: 30px;
+  animation-delay: 1s;
+}
+.floater.floater3 {
+  top: 50%;
+  left: 85%;
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}/*# sourceMappingURL=Login.module.css.map */
