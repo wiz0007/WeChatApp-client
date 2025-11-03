@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Sidebar from "../../components/sidebar/Sidebar";
 import ChatList from "../../components/chatList/ChatList";
 import ChatWindow from "../../components/chatWindow/ChatWindow";
-import WelcomeBot from "../../features/welcomeBot/Welcomebot";// 👈 new import
+import WelcomeBot from "../../features/welcomeBot/WelcomeBot"
 import styles from "./Home.module.scss";
 
 const Home = () => {
