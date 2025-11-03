@@ -2,7 +2,7 @@
 
 .navbar {
   @include Flex(row, flex-start, center);
-  width: 100%;
+  // width: 100%;
   padding: 1rem 2rem;
   background: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);

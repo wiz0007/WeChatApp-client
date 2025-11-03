@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.chatListWrapper {
+  height: 100%;
+  background-color: #111b21;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #2f3b43;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #202c33;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #2f3b43;
+}
+.searchBar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e9edef;
+  font-size: 0.95rem;
+  margin-left: 0.5rem;
+}
+.searchBar input::-moz-placeholder {
+  color: #8696a0;
+}
+.searchBar input::placeholder {
+  color: #8696a0;
+}
+.searchBar .searchIcon {
+  color: #8696a0;
+  font-size: 0.95rem;
+}
+
+.chatContainer {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #111b21;
+}
+.chatContainer::-webkit-scrollbar {
+  width: 5px;
+}
+.chatContainer::-webkit-scrollbar-thumb {
+  background-color: #2f3b43;
+  border-radius: 10px;
+}
+
+.chatCard {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.25s;
+  border-bottom: 1px solid #2f3b43;
+}
+.chatCard:hover {
+  background-color: #1e2a30;
+}
+.chatCard img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.chatCard .chatDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.chatCard .chatDetails .topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chatCard .chatDetails .topRow h4 {
+  color: #e9edef;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+}
+.chatCard .chatDetails .topRow .time {
+  color: #8696a0;
+  font-size: 0.8rem;
+}
+.chatCard .chatDetails .bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chatCard .chatDetails .bottomRow p {
+  color: #8696a0;
+  font-size: 0.9rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 0.2rem;
+  width: 85%;
+}
+.chatCard .chatDetails .bottomRow .star {
+  color: #00a884;
+  font-size: 0.8rem;
+}
+.chatCard .unreadDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #00a884;
+}
+.chatCard.unread {
+  background-color: #1a2a32;
+}
+
+.noUsers {
+  color: #8696a0;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+
+/* existing code remains unchanged above */
+.chatCard.active {
+  background-color: #1a2a32;
+}
+
+.chatCard:hover img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.chatCard img {
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .chatCard {
+    padding: 0.7rem 1rem;
+  }
+  .chatCard img {
+    width: 40px;
+    height: 40px;
+  }
+  .chatDetails h4 {
+    font-size: 0.95rem;
+  }
+  .chatDetails p {
+    font-size: 0.8rem;
+  }
+}/*# sourceMappingURL=ChatList.module.css.map */

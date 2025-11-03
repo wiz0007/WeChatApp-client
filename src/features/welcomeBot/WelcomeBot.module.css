@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
+  background-color: #111b21;
+  padding: 1.2rem;
+  color: #e9edef;
+}
+
+.chatBox {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-right: 0.3rem;
+}
+.chatBox::-webkit-scrollbar {
+  width: 5px;
+}
+.chatBox::-webkit-scrollbar-thumb {
+  background: #2f3b43;
+  border-radius: 10px;
+}
+
+.message {
+  max-width: 75%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+}
+
+.bot {
+  align-self: flex-start;
+  background-color: #202c33;
+}
+
+.user {
+  align-self: flex-end;
+  background-color: #00a884;
+  color: white;
+}
+
+.inputBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #202c33;
+  border-radius: 25px;
+  padding: 0.4rem 0.8rem;
+  margin-top: 1rem;
+}
+.inputBar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #e9edef;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+}
+.inputBar button {
+  background-color: #00a884;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  padding: 0.4;
+}
+.inputBar button:hover {
+  background-color: #06cf9c;
+}/*# sourceMappingURL=WelcomeBot.module.css.map */

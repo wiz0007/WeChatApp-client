@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #202c33;
+  height: 90%;
+  width: 70px;
+  padding: 1rem 0;
+  border-right: 1px solid #2f3b43;
+  position: relative;
+}
+
+.logo .logoIcon {
+  font-size: 1.5rem;
+  color: #00a884;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.8rem;
+  margin-top: 1.5rem;
+  flex: 1;
+  width: 100%;
+}
+
+.iconWrapper {
+  position: relative;
+  color: #aebac1;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.iconWrapper:hover {
+  color: #00a884;
+}
+.iconWrapper:hover .tooltip {
+  opacity: 1;
+  transform: translateX(10px);
+  visibility: visible;
+}
+.iconWrapper .tooltip {
+  font-size: 0.75rem;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+  left: 70px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-5px);
+  background-color: #111b21;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.profile img {
+  height: 40px;
+  width: 40px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.3s ease;
+}
+.profile img:hover {
+  border-color: #00a884;
+}/*# sourceMappingURL=Sidebar.module.css.map */

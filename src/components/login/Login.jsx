@@ -1,33 +1,83 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaLock, FaUser, FaPhone } from "react-icons/fa";
+import { FaEnvelope, FaUser, FaIdCard } from "react-icons/fa";
 import styles from "./Login.module.scss";
 
-const Login = () => {
-  const [mode, setMode] = useState("login"); // 'login' | 'register'
+const LoginPage = () => {
+  const [mode, setMode] = useState("login"); // login | register
+  const [step, setStep] = useState(1); // 1 = input email, 2 = verify OTP
+  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [isSending, setIsSending] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const otpRefs = [useRef(), useRef(), useRef(), useRef()];
 
-    if (mode === "login") {
-      if (!username.trim() && !phone.trim()) {
-        alert("Please enter username or phone number!");
-        return;
+  const handleOtpChange = (value, index) => {
+    if (!/^\d?$/.test(value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    if (value && index < 3) otpRefs[index + 1].current.focus();
+    if (!value && index > 0) otpRefs[index - 1].current.focus();
+  };
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    if (!email.includes("@")) {
+      alert("Please enter a valid email address!");
+      return;
+    }
+
+    try {
+      setIsSending(true);
+      const res = await fetch("http://localhost:5000/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, mode }), // 👈 added mode
+      });
+
+      const data = await res.json();
+      setIsSending(false);
+
+      if (data.success) {
+        alert(`OTP sent to ${email}`);
+        setStep(2);
+      } else {
+        alert(data.message || "Error sending OTP");
       }
-      localStorage.setItem("wechatUser", username || phone);
-      navigate("/chat");
+    } catch (err) {
+      setIsSending(false);
+      alert("Server error! Please try again.");
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    const enteredOtp = otp.join("");
+
+    const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email, // replace phone with email
+        otp: enteredOtp,
+        ...(mode === "register" ? { name, username } : {}),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      localStorage.setItem("wechatUser", JSON.stringify(data.user));
+      localStorage.setItem("wechatToken", data.token);
+      navigate("/home");
     } else {
-      if (!username.trim() || !phone.trim()) {
-        alert("Please enter username and phone number to register!");
-        return;
-      }
-      localStorage.setItem("wechatUser", username);
-      alert("Registration successful!");
-      navigate("/chat");
+      alert(data.message || "Verification failed");
     }
   };
 
@@ -39,6 +89,7 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
+        {/* Left Panel */}
         <motion.div
           className={styles.leftPanel}
           initial={{ opacity: 0, x: -30 }}
@@ -46,56 +97,124 @@ const Login = () => {
           transition={{ duration: 0.9, ease: "easeOut" }}
         >
           <h2 className={styles.title}>
-            {mode === "login" ? "Welcome back" : "Create an account"} <span>WeChat</span>
+            {mode === "login" ? "Welcome Back" : "Join"} <span>WeChat</span>
           </h2>
           <p className={styles.subtitle}>
             {mode === "login"
-              ? "Enter your credentials to continue"
-              : "Register to start chatting instantly"}
+              ? step === 1
+                ? "Enter your email to log in"
+                : "Enter the OTP we sent to your email"
+              : step === 1
+              ? "Fill in your details to register"
+              : "Enter the OTP sent to your email"}
           </p>
 
-          <form className={styles.form} onSubmit={handleSubmit}>
-            {/* Username input */}
-            <div className={styles.inputGroup}>
-              <FaUser className={styles.icon} />
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
+          {/* Step 1 - Input */}
+          {step === 1 && (
+            <form className={styles.form} onSubmit={handleSendOtp}>
+              {mode === "register" && (
+                <>
+                  <div className={styles.inputGroup}>
+                    <FaIdCard className={styles.icon} />
+                    <input
+                      type="text"
+                      placeholder="Full Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <FaUser className={styles.icon} />
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                    />
+                  </div>
+                </>
+              )}
 
-            {/* Phone input */}
-            <div className={styles.inputGroup}>
-              <FaPhone className={styles.icon} />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
+              <div className={styles.inputGroup}>
+                <FaEnvelope className={styles.icon} />
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              className={styles.button}
-            >
-              <FaLock className={styles.btnIcon} />
-              {mode === "login" ? "Login" : "Register"}
-            </motion.button>
-          </form>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                disabled={isSending}
+                className={styles.button}
+              >
+                {isSending ? "Sending..." : "Send OTP"}
+              </motion.button>
+            </form>
+          )}
+
+          {/* Step 2 - OTP */}
+          {step === 2 && (
+            <form className={styles.form} onSubmit={handleVerifyOtp}>
+              <div className={styles.otpContainer}>
+                {otp.map((digit, index) => (
+                  <input
+                    key={index}
+                    ref={otpRefs[index]}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(e.target.value, index)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && !otp[index] && index > 0) {
+                        otpRefs[index - 1].current.focus();
+                      }
+                    }}
+                    className={styles.otpBox}
+                    required
+                  />
+                ))}
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                className={styles.button}
+              >
+                Verify OTP
+              </motion.button>
+              <p className={styles.resend} onClick={() => setStep(1)}>
+                Change Email / Resend OTP
+              </p>
+            </form>
+          )}
 
           <p className={styles.switchMode}>
             {mode === "login" ? "New user?" : "Already have an account?"}{" "}
-            <span onClick={() => setMode(mode === "login" ? "register" : "login")}>
+            <span
+              onClick={() => {
+                setMode(mode === "login" ? "register" : "login");
+                setStep(1);
+                setName("");
+                setUsername("");
+                setEmail("");
+                setOtp(["", "", "", ""]);
+              }}
+            >
               {mode === "login" ? "Register here" : "Login here"}
             </span>
           </p>
         </motion.div>
 
+        {/* Right Panel */}
         <motion.div
           className={styles.rightPanel}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -114,11 +233,6 @@ const Login = () => {
               <span></span>
               <span></span>
             </div>
-
-            {/* Floating emojis */}
-            <div className={styles.floater + " " + styles.floater1}>💬</div>
-            <div className={styles.floater + " " + styles.floater2}>🔒</div>
-            <div className={styles.floater + " " + styles.floater3}>⚡</div>
           </div>
         </motion.div>
       </motion.section>
@@ -126,4 +240,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
