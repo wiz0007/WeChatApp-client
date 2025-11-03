@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.homeWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+  height: 100vh;
+  background-color: #0b141a;
+  color: #e9edef;
+}
+
+.sidebarContainer {
+  width: 70px;
+  background-color: #202c33;
+  border-right: 1px solid #2f3b43;
+}
+
+.chatListContainer {
+  width: 400px;
+  background-color: #111b21;
+  border-right: 1px solid #2f3b43;
+}
+
+.chatWindowContainer {
+  flex: 1;
+  background-color: #222e35;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.placeholder img {
+  width: 180px;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+.placeholder h2 {
+  font-size: 1.6rem;
+  color: #e9edef;
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 0.3rem;
+}
+.placeholder p {
+  font-size: 0.9rem;
+  color: #8696a0;
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 1.5rem;
+}
+.placeholder .downloadBtn {
+  background-color: #00a884;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.placeholder .downloadBtn:hover {
+  background-color: #06cf9c;
+}/*# sourceMappingURL=Home.module.css.map */
