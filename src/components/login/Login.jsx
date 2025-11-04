@@ -35,7 +35,7 @@ const LoginPage = () => {
 
     try {
       setIsSending(true);
-      const res = await fetch("http://localhost:5000/api/auth/send-otp", {
+      const res = await fetch("https://wechat-server-sorq.onrender.com/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, mode }), // 👈 added mode
@@ -60,7 +60,7 @@ const LoginPage = () => {
     e.preventDefault();
     const enteredOtp = otp.join("");
 
-    const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+    const response = await fetch("https://wechat-server-sorq.onrender.com/api/auth/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

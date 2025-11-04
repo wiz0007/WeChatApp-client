@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import styles from "./ChatWindow.module.scss";
 
-const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = "https://wechat-server-sorq.onrender.com";
 let socket;
 
 const ChatWindow = ({ chat }) => {
