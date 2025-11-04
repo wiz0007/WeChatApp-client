@@ -18,7 +18,7 @@ const ChatList = ({ onSelectChat }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/chat/users", {
+      const res = await fetch("https://wechat-server-sorq.onrender.com/api/chat/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
