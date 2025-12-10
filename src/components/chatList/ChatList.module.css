@@ -121,34 +121,4 @@
   text-align: center;
   margin-top: 2rem;
   font-size: 0.95rem;
-}
-
-/* existing code remains unchanged above */
-.chatCard.active {
-  background-color: #1a2a32;
-}
-
-.chatCard:hover img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-.chatCard img {
-  transition: transform 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  .chatCard {
-    padding: 0.7rem 1rem;
-  }
-  .chatCard img {
-    width: 40px;
-    height: 40px;
-  }
-  .chatDetails h4 {
-    font-size: 0.95rem;
-  }
-  .chatDetails p {
-    font-size: 0.8rem;
-  }
 }/*# sourceMappingURL=ChatList.module.css.map */

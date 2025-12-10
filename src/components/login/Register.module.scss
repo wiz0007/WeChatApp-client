@@ -2,8 +2,8 @@
 
 .container {
   @include Flex(column, center, center);
-  height: 100;
-  background: radial-gradient(circle at top, #0d1220, #05060a 70%);
+  // height: 100vh;
+  background: radial-gradient(circle at 30% 20%, #0d1220, #05060a 70%);
   padding: 20px;
   overflow: hidden;
 }
@@ -27,7 +27,7 @@ h1 {
   text-align: center;
 }
 
-.form {
+.form, .otpSection, .successBox {
   width: 100%;
   @include Flex(column, center, center);
 }
@@ -55,6 +55,7 @@ h1 {
     @include Text(15px, #fff);
     font-weight: 500;
     letter-spacing: 0.5px;
+    transition: 0.2s;
   }
 
   span {
@@ -107,13 +108,6 @@ h1 {
   margin: 12px 0;
 }
 
-.forgot {
-  width: 100%;
-  text-align: right;
-  @include Text(13px, #2b82ff);
-  margin-bottom: 10px;
-}
-
 .switch {
   @include Text(14px, #bbb);
   margin-top: 16px;
@@ -122,5 +116,52 @@ h1 {
   a {
     color: #2b82ff;
     text-decoration: none;
+  }
+}
+
+.otpInputRow {
+  @include Flex(row, center, center);
+  gap: 12px;
+  margin: 20px 0;
+
+  input {
+    width: 50px;
+    height: 55px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    @include Text(22px, #fff);
+    text-align: center;
+    font-weight: bold;
+    transition: 0.2s;
+
+    &:focus {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid #2b82ff;
+    }
+  }
+}
+
+.resendBtn {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: #2b82ff;
+  cursor: pointer;
+  @include Text(14px, #2b82ff);
+  font-weight: 500;
+}
+
+.lottie {
+  width: 140px;
+  margin-bottom: 20px;
+}
+
+.successBox {
+  @include Flex(column, center, center);
+  h2 {
+    @include Text(24px, #2bff9e);
+    margin-top: 20px;
   }
 }
