@@ -1,18 +1,23 @@
 import React from "react";
 import styles from "./Navbar.module.scss";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   return (
     <nav className={styles.navbar}>
-      <div className={styles.logoContainer}>
+      <a
+        href="https://we-chatt-ruby.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.logoContainer}
+      >
         <img
-          src={logo} // Replace with your actual logo path
+          src={logo}
           alt="WeChat Logo"
           className={styles.logo}
         />
         <span className={styles.logoText}>WeChat</span>
-      </div>
+      </a>
     </nav>
   );
 };

@@ -19,6 +19,8 @@
 
 .logoContainer {
   @include Flex(row, flex-start, center);
+  cursor: pointer;
+  text-decoration: none;
   gap: 0.5rem;
 }
 
