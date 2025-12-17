@@ -4,11 +4,13 @@ import LoginPage from "../pages/Auth/LoginPage";
 import RegisterPage from "../pages/Auth/RegisterPage";
 import ForgetPassword from "../features/forgetPassword/ForgetPassword";
 import ResetPassword from "../features/resetPassword/ResetPassword";
+import ScrollToTop from "./ScrollToTop";
 
 
 const Allroutes = () => {
   return (
     <Routes>
+      <ScrollToTop/>
       <Route path="/" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
