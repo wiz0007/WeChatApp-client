@@ -2,16 +2,13 @@
 
 .navbar {
   @include Flex(row, flex-start, center);
-  // width: 100%;
+  width: 100%;
   padding: 1rem 2rem;
   background: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   z-index: 50;
-  
-  
-
   @media (max-width: 600px) {
     padding: 0.8rem 1rem;
   }

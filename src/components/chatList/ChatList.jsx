@@ -1,122 +1,207 @@
-import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  FaCog,
+  FaQuestionCircle,
+  FaSearch,
+  FaSignOutAlt,
+  FaUserCircle,
+} from "react-icons/fa";
 import styles from "./ChatList.module.scss";
+import api, { getAuthHeaders } from "../../api/axios";
+import { HELP_BOT_CHAT } from "../../features/welcomeBot/helpBotConfig";
 
-const ChatList = ({ onSelectChat }) => {
+const formatStatus = (user) => {
+  if (user.type === "bot") return "Helper";
+  if (user.isOnline) return "Online";
+  if (!user.lastSeen) return "Offline";
+
+  const date = new Date(user.lastSeen);
+  return `Last seen ${date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
+};
+
+const ChatList = ({
+  onSelectChat,
+  isMobile = false,
+  onOpenHelper,
+  onOpenProfile,
+}) => {
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("wechatUser") || "null");
 
-  // ✅ Fetch users (shared logic)
   const fetchUsers = async () => {
     const token = localStorage.getItem("wechatToken");
     if (!token) {
-      console.error("❌ No token found — user might not be logged in.");
       setLoading(false);
       return;
     }
 
     try {
-      const res = await fetch("https://wechat-server-sorq.onrender.com/api/chat/users", {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await api.get("/chat/users", {
+        headers: getAuthHeaders(),
       });
-
-      if (!res.ok) {
-        console.error("❌ Fetch failed with status:", res.status);
-        setLoading(false);
-        return;
-      }
-
-      const data = await res.json();
-      const currentUser = JSON.parse(localStorage.getItem("wechatUser") || "{}");
-
-      const filtered = Array.isArray(data)
-        ? data.filter((u) => u._id !== currentUser?._id)
-        : [];
-
-      setUsers(filtered);
-      setFilteredUsers(
-        filtered.filter(
-          (u) =>
-            u.name?.toLowerCase().includes(search.toLowerCase()) ||
-            u.username?.toLowerCase().includes(search.toLowerCase()) ||
-            u.email?.toLowerCase().includes(search.toLowerCase())
-        )
-      );
+      setUsers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
-      console.error("⚠️ Error fetching users:", err);
+      console.error("Error fetching users:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ Fetch once on mount
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // ✅ Auto-refresh every 30 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchUsers();
-    }, 30000); // 30s interval
+    const interval = setInterval(fetchUsers, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
-    return () => clearInterval(interval); // cleanup on unmount
-  }, [search]);
+  const handleSelectUser = async (user) => {
+    setShowMobileMenu(false);
 
-  // ✅ Handle search locally
-  const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    setSearch(value);
-    setFilteredUsers(
-      users.filter(
-        (u) =>
-          u.name?.toLowerCase().includes(value) ||
-          u.username?.toLowerCase().includes(value) ||
-          u.email?.toLowerCase().includes(value)
-      )
-    );
+    if (user.type === "bot") {
+      onSelectChat?.(user);
+      return;
+    }
+
+    try {
+      const res = await api.post(
+        "/chat/access",
+        { userId: user._id },
+        { headers: getAuthHeaders() }
+      );
+      onSelectChat?.(res.data);
+    } catch (err) {
+      console.error("Failed to open chat:", err);
+    }
   };
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout", {}, { headers: getAuthHeaders() });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      localStorage.removeItem("wechatToken");
+      localStorage.removeItem("wechatUser");
+      window.location.href = "/";
+    }
+  };
+
+  const normalizedSearch = search.toLowerCase();
+  const displayItems = useMemo(() => {
+    const filteredUsers = users.filter(
+      (user) =>
+        user.name?.toLowerCase().includes(normalizedSearch) ||
+        user.username?.toLowerCase().includes(normalizedSearch) ||
+        user.email?.toLowerCase().includes(normalizedSearch)
+    );
+
+    return HELP_BOT_CHAT.name.toLowerCase().includes(normalizedSearch) ||
+      HELP_BOT_CHAT.email.toLowerCase().includes(normalizedSearch) ||
+      normalizedSearch === ""
+      ? [HELP_BOT_CHAT, ...filteredUsers]
+      : filteredUsers;
+  }, [normalizedSearch, users]);
 
   return (
     <div className={styles.chatListWrapper}>
-      {/* 🔍 Search Bar */}
+      {isMobile && (
+        <div className={styles.mobileHeader}>
+          <button
+            type="button"
+            className={styles.mobileProfile}
+            onClick={onOpenProfile}
+          >
+            <FaUserCircle />
+          </button>
+          <button
+            type="button"
+            className={styles.mobileBrand}
+            onClick={onOpenHelper}
+          >
+            WeChat
+          </button>
+          <button
+            type="button"
+            className={styles.mobileSettings}
+            onClick={() => setShowMobileMenu((prev) => !prev)}
+          >
+            <FaCog />
+          </button>
+        </div>
+      )}
+
+      {isMobile && showMobileMenu && (
+        <div className={styles.mobileMenu}>
+          <button
+            type="button"
+            onClick={() => {
+              setShowMobileMenu(false);
+              onOpenHelper?.();
+            }}
+          >
+            <FaQuestionCircle />
+            <span>Open Helper</span>
+          </button>
+          <button type="button" onClick={handleLogout}>
+            <FaSignOutAlt />
+            <span>Logout</span>
+          </button>
+        </div>
+      )}
+
       <div className={styles.searchBar}>
         <FaSearch className={styles.searchIcon} />
         <input
           type="text"
-          placeholder="Search or start a new chat"
+          placeholder="Search chats"
           value={search}
-          onChange={handleSearch}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      {/* 💬 Chat List */}
       <div className={styles.chatContainer}>
         {loading ? (
-          <p className={styles.noUsers}>Loading users...</p>
-        ) : filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
+          <p className={styles.noUsers}>Loading chats...</p>
+        ) : displayItems.length > 0 ? (
+          displayItems.map((user) => (
             <div
               key={user._id}
               className={styles.chatCard}
-              onClick={() => onSelectChat?.(user)}
+              onClick={() => handleSelectUser(user)}
             >
               <img
-                src={
-                  user.profilePic ||
-                  "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                }
+                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 alt={user.name}
               />
               <div className={styles.chatDetails}>
                 <div className={styles.topRow}>
                   <h4>{user.name || user.username}</h4>
-                  <span className={styles.time}>Online</span>
+                  <span
+                    className={`${styles.time} ${
+                      user.type === "bot"
+                        ? styles.helperBadge
+                        : user.isOnline
+                        ? styles.onlineBadge
+                        : styles.offlineBadge
+                    }`}
+                  >
+                    {user.type === "bot"
+                      ? "Helper"
+                      : user.isOnline
+                      ? "Online"
+                      : "Offline"}
+                  </span>
                 </div>
                 <div className={styles.bottomRow}>
-                  <p>{user.email}</p>
+                  <p>{user.type === "bot" ? user.email : formatStatus(user)}</p>
                 </div>
               </div>
             </div>
@@ -125,6 +210,34 @@ const ChatList = ({ onSelectChat }) => {
           <p className={styles.noUsers}>No users found.</p>
         )}
       </div>
+
+      {isMobile && (
+        <div className={styles.mobileFooter}>
+          <button
+            type="button"
+            className={styles.footerItem}
+            onClick={onOpenProfile}
+          >
+            <FaUserCircle />
+            <span>{currentUser?.username || "Profile"}</span>
+          </button>
+          <button
+            type="button"
+            className={`${styles.footerItem} ${styles.footerBrand}`}
+            onClick={onOpenHelper}
+          >
+            <span>WeChat</span>
+          </button>
+          <button
+            type="button"
+            className={styles.footerItem}
+            onClick={() => setShowMobileMenu((prev) => !prev)}
+          >
+            <FaCog />
+            <span>Settings</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

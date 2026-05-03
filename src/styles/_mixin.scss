@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@use "./tokens" as *;
 
 @mixin Flex($direction, $justify, $align) {
   display: flex;
@@ -16,5 +16,32 @@
 @mixin Text($size, $color) {
   font-size: $size;
   color: $color;
-  font-family: 'Roboto', sans-serif;
+  font-family: $font-sans;
+}
+
+@mixin Mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin Phone {
+  @media (max-width: $breakpoint-phone) {
+    @content;
+  }
+}
+
+@mixin Scrollbar($thumb) {
+  scrollbar-width: thin;
+  scrollbar-color: $thumb transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb;
+    border-radius: 999px;
+  }
 }

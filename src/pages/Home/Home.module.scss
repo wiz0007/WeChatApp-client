@@ -1,63 +1,67 @@
 @use "../../styles/mixin" as *;
+@use "../../styles/tokens" as *;
 
 .homeWrapper {
   @include Flex(row, stretch, stretch);
-  height: 100vh;
-  background-color: #0b141a;
-  color: #e9edef;
+  height: 100dvh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at top left, rgba(16, 191, 164, 0.1), transparent 28%),
+    linear-gradient(180deg, #0f1a20 0%, $color-bg-app 100%);
+  color: $color-text-primary;
+  overflow: hidden;
 }
 
 .sidebarContainer {
-  width: 70px;
-  background-color: #202c33;
-  border-right: 1px solid #2f3b43;
+  width: 72px;
+  background: linear-gradient(180deg, #21313a 0%, #1a272e 100%);
+  border-right: 1px solid $color-border;
+  flex-shrink: 0;
 }
 
 .chatListContainer {
-  width: 400px;
-  background-color: #111b21;
-  border-right: 1px solid #2f3b43;
+  width: min(390px, 34vw);
+  min-width: 320px;
+  background: $color-bg-panel;
+  border-right: 1px solid $color-border;
+  flex-shrink: 0;
+  min-height: 0;
 }
 
 .chatWindowContainer {
   flex: 1;
-  background-color: #222e35;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-  overflow: hidden; // prevents scrollbars from double appearing
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.03), transparent 20%),
+    $color-bg-app;
+  overflow: hidden;
 }
 
+.mobileHidden {
+  display: none;
+}
 
-.placeholder {
-  @include Flex(column, center, center);
-  img {
-    width: 180px;
-    margin-bottom: 1rem;
-    opacity: 0.9;
+.sidebarCollapsed {
+  display: none;
+}
+
+@include Mobile {
+  .homeWrapper {
+    height: 100dvh;
+    min-height: 100dvh;
   }
 
-  h2 {
-    @include Text(1.6rem, #e9edef);
-    margin-bottom: 0.3rem;
+  .sidebarContainer {
+    display: none;
   }
 
-  p {
-    @include Text(0.9rem, #8696a0);
-    margin-bottom: 1.5rem;
-  }
-
-  .downloadBtn {
-    background-color: #00a884;
-    border: none;
-    color: white;
-    padding: 0.6rem 1.4rem;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 0.3s;
-    &:hover {
-      background-color: #06cf9c;
-    }
+  .chatListContainer,
+  .chatWindowContainer {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
   }
 }

@@ -2,16 +2,16 @@
 
 .container {
   @include Flex(column, center, center);
-  // height: 100vh;
+  min-height: calc(100svh - 72px);
   background: radial-gradient(circle at 30% 20%, #0d1220, #05060a 70%);
-  padding: 20px;
-  overflow: hidden;
+  padding: 24px 16px 36px;
+  overflow: auto;
 }
 
 .card {
   width: 100%;
-  max-width: 450px;
-  padding: 35px;
+  max-width: 440px;
+  padding: 32px;
   border-radius: 24px;
   backdrop-filter: blur(18px);
   background: rgba(255,255,255,0.05);
@@ -30,6 +30,7 @@ h1 {
 .form, .otpSection, .successBox {
   width: 100%;
   @include Flex(column, center, center);
+  gap: 0.2rem;
 }
 
 .inputGroup {
@@ -163,5 +164,21 @@ h1 {
   h2 {
     @include Text(24px, #2bff9e);
     margin-top: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    min-height: calc(100svh - 64px);
+    padding: 18px 12px 28px;
+  }
+
+  .card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
   }
 }

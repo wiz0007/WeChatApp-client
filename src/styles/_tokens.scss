@@ -1,0 +1,30 @@
+$font-sans: "Segoe UI", "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+  "Helvetica Neue", sans-serif;
+
+$color-bg-app: #0b141a;
+$color-bg-panel: #111b21;
+$color-bg-elevated: #18252c;
+$color-surface: #202c33;
+$color-surface-soft: #1f2f37;
+$color-border: #2a3942;
+$color-border-soft: #26353d;
+$color-accent: #00a884;
+$color-accent-strong: #10bfa4;
+$color-text-primary: #e9edef;
+$color-text-secondary: #94a6af;
+$color-text-muted: #7d8f98;
+$color-helper: #f6d365;
+$color-online: #7ce6b3;
+$color-offline: #9aa8b1;
+
+$radius-xs: 8px;
+$radius-sm: 12px;
+$radius-md: 16px;
+$radius-lg: 22px;
+$radius-pill: 999px;
+
+$shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.16);
+$shadow-panel: 0 8px 24px rgba(0, 0, 0, 0.22);
+
+$breakpoint-mobile: 900px;
+$breakpoint-phone: 640px;

@@ -1,138 +1,246 @@
 @use "../../styles/mixin" as *;
+@use "../../styles/tokens" as *;
 
 .chatListWrapper {
   height: 100%;
-  background-color: #111b21;
+  min-height: 0;
+  background: $color-bg-panel;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #2f3b43;
+  min-width: 0;
+}
+
+.mobileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem 0.75rem;
+  background: linear-gradient(180deg, $color-bg-elevated 0%, $color-bg-panel 100%);
+  border-bottom: 1px solid $color-border-soft;
+}
+
+.mobileProfile,
+.mobileSettings {
+  width: 42px;
+  height: 42px;
+  border: 1px solid $color-border;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  color: $color-text-primary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-soft;
+  cursor: pointer;
+}
+
+.mobileBrand {
+  border: none;
+  background: transparent;
+  color: $color-text-primary;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.mobileMenu {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.8rem 1rem;
+  background: $color-bg-elevated;
+  border-bottom: 1px solid $color-border-soft;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    color: $color-text-primary;
+    cursor: pointer;
+  }
 }
 
 .searchBar {
   display: flex;
   align-items: center;
-  background-color: #202c33;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid #2f3b43;
+  gap: 0.65rem;
+  margin: 0.9rem 1rem 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: $color-surface;
+  box-shadow: $shadow-soft;
 
   input {
     flex: 1;
-    background: transparent;
+    min-width: 0;
     border: none;
     outline: none;
-    color: #e9edef;
-    font-size: 0.95rem;
-    margin-left: 0.5rem;
+    background: transparent;
+    color: $color-text-primary;
+    font-size: 0.96rem;
 
     &::placeholder {
-      color: #8696a0;
+      color: $color-text-muted;
     }
   }
 
   .searchIcon {
-    color: #8696a0;
+    color: $color-text-muted;
     font-size: 0.95rem;
   }
 }
 
 .chatContainer {
   flex: 1;
+  min-height: 0;
+  margin-top: 0.85rem;
   overflow-y: auto;
-  background-color: #111b21;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #2f3b43;
-    border-radius: 10px;
-  }
+  background: $color-bg-panel;
+  @include Scrollbar($color-border);
 }
 
 .chatCard {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  padding: 0.9rem 1.2rem;
+  padding: 1rem;
   cursor: pointer;
-  transition: background-color 0.25s;
-  border-bottom: 1px solid #2f3b43;
+  transition: background-color 0.25s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
   &:hover {
-    background-color: #1e2a30;
+    background: rgba(255, 255, 255, 0.03);
   }
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     object-fit: cover;
-  }
-
-  .chatDetails {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-
-    .topRow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      h4 {
-        color: #e9edef;
-        font-size: 1rem;
-        margin: 0;
-        font-weight: 500;
-      }
-
-      .time {
-        color: #8696a0;
-        font-size: 0.8rem;
-      }
-    }
-
-    .bottomRow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      p {
-        color: #8696a0;
-        font-size: 0.9rem;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        margin-top: 0.2rem;
-        width: 85%;
-      }
-
-      .star {
-        color: #00a884;
-        font-size: 0.8rem;
-      }
-    }
-  }
-
-  .unreadDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #00a884;
-  }
-
-  &.unread {
-    background-color: #1a2a32;
+    flex-shrink: 0;
   }
 }
 
+.chatDetails {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $color-text-primary;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.time {
+  font-size: 0.74rem;
+  line-height: 1;
+  padding: 0.32rem 0.58rem;
+  border-radius: $radius-pill;
+  white-space: nowrap;
+}
+
+.bottomRow p {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: 0.88rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobileFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.7rem 0.9rem calc(0.78rem + env(safe-area-inset-bottom));
+  border-top: 1px solid $color-border;
+  background: linear-gradient(180deg, $color-bg-panel 0%, #0f181d 100%);
+}
+
+.footerItem {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: $color-text-secondary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.32rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.footerBrand {
+  color: $color-text-primary;
+  font-weight: 700;
+}
+
+.helperBadge {
+  color: $color-helper;
+  background: rgba(246, 211, 101, 0.12);
+}
+
+.onlineBadge {
+  color: $color-online;
+  background: rgba(0, 168, 132, 0.18);
+}
+
+.offlineBadge {
+  color: $color-offline;
+  background: rgba(154, 168, 177, 0.12);
+}
+
 .noUsers {
-  color: #8696a0;
+  color: $color-text-secondary;
   text-align: center;
   margin-top: 2rem;
   font-size: 0.95rem;
 }
 
+@include Mobile {
+  .searchBar {
+    margin: 0.85rem 0.85rem 0;
+  }
+
+  .chatCard {
+    padding: 0.95rem 0.9rem;
+
+    img {
+      width: 46px;
+      height: 46px;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-mobile + 1px) {
+  .mobileHeader,
+  .mobileMenu,
+  .mobileFooter {
+    display: none;
+  }
+
+  .searchBar {
+    margin-top: 1rem;
+  }
+}

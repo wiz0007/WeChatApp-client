@@ -6,16 +6,30 @@ import {
   FaCog,
   FaCircle,
   FaBell,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import styles from "./Sidebar.module.scss";
+import api, { getAuthHeaders } from "../../api/axios";
 
-const Sidebar = () => {
+const Sidebar = ({ onSelectBot, onSelectProfile }) => {
   const icons = [
     { id: 1, icon: <FaCommentDots />, label: "Chats" },
     { id: 2, icon: <FaUsers />, label: "Groups" },
     { id: 3, icon: <FaBell />, label: "Notifications" },
     { id: 4, icon: <FaCog />, label: "Settings" },
   ];
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout", {}, { headers: getAuthHeaders() });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      localStorage.removeItem("wechatToken");
+      localStorage.removeItem("wechatUser");
+      window.location.href = "/";
+    }
+  };
 
   return (
     <motion.aside
@@ -36,6 +50,7 @@ const Sidebar = () => {
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300 }}
+            onClick={item.id === 1 ? onSelectBot : undefined}
           >
             {item.icon}
             <span className={styles.tooltip}>{item.label}</span>
@@ -47,8 +62,23 @@ const Sidebar = () => {
         className={styles.profile}
         whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.2 }}
+        onClick={onSelectProfile}
       >
-        <img src="/assets/avatar.png" alt="profile" />
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          alt="profile"
+        />
+      </motion.div>
+
+      <motion.div
+        className={styles.iconWrapper}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        onClick={handleLogout}
+      >
+        <FaSignOutAlt />
+        <span className={styles.tooltip}>Logout</span>
       </motion.div>
     </motion.aside>
   );

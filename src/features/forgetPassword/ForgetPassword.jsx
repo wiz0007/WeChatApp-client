@@ -1,10 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import styles from "./ForgetPassword.module.scss";
-import { Eye, EyeOff, Mail } from "lucide-react";
-
-const API = import.meta.env.VITE_API_URL;
+import { Mail } from "lucide-react";
+import api from "../../api/axios";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -13,8 +11,8 @@ export default function ForgotPassword() {
     if (!email) return toast.error("Enter your email");
 
     try {
-      await axios.post(`${API}/api/auth/forgot-password`, { email });
-      toast.success("Reset link sent to your email");
+      const res = await api.post("/auth/forgot-password", { email });
+      toast.success(res.data?.message || "Reset link sent to your email");
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong");
     }
@@ -39,7 +37,7 @@ export default function ForgotPassword() {
           Send Reset Link
         </button>
 
-        <p className={styles.back} onClick={() => (window.location.href = "/login")}>
+        <p className={styles.back} onClick={() => (window.location.href = "/")}>
           Back to Login
         </p>
       </div>

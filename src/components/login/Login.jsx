@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import styles from "./Login.module.scss";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
-
-const API = import.meta.env.VITE_API_URL;
+import { toast } from "react-hot-toast";
+import api from "../../api/axios";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
@@ -20,10 +18,11 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post(`${API}/api/auth/login`, form);
-      localStorage.setItem("token", res.data.token);
+      const res = await api.post("/auth/login", form);
+      localStorage.setItem("wechatToken", res.data.token);
+      localStorage.setItem("wechatUser", JSON.stringify(res.data.user));
       toast.success("Login successful!");
-      setTimeout(() => (window.location.href = "/dashboard"), 1200);
+      setTimeout(() => (window.location.href = "/home"), 1200);
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     } finally {
@@ -31,13 +30,8 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = `${API}/api/auth/google-login`;
-  };
-
   return (
     <div className={styles.container}>
-      <Toaster position="top-center" />
       <motion.div
         className={styles.card}
         initial={{ y: 80, opacity: 0 }}
@@ -87,7 +81,9 @@ const Login = () => {
           <button
             type="button"
             className={styles.googleBtn}
-            onClick={handleGoogleLogin}
+            onClick={() =>
+              toast("Google OAuth is not configured in this build yet.")
+            }
           >
             <img src="https://www.svgrepo.com/show/355037/google.svg" />
             Continue with Google

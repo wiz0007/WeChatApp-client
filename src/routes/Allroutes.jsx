@@ -9,17 +9,18 @@ import ScrollToTop from "./ScrollToTop";
 
 const Allroutes = () => {
   return (
-    <Routes>
-      <ScrollToTop/>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-      {/* NEW ROUTES */}
-      <Route path="/forgot-password" element={<ForgetPassword />} />
-      <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route path="/home" element={<Home />} />
-    </Routes>
+        <Route path="/home" element={<Home />} />
+      </Routes>
+    </>
   );
 };
 

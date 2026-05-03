@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import styles from "./ResetPassword.module.scss";
-
-const API = import.meta.env.VITE_API_URL;
+import api from "../../api/axios";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -25,7 +23,7 @@ export default function ResetPassword() {
 
     try {
       setLoading(true);
-      await axios.post(`${API}/api/auth/reset-password`, {
+      await api.post("/auth/reset-password", {
         userId,
         token,
         newPassword: password,
@@ -34,7 +32,7 @@ export default function ResetPassword() {
       toast.success("Password changed!");
 
       setTimeout(() => {
-        window.location.href = "/login";
+        window.location.href = "/";
       }, 1500);
     } catch (err) {
       toast.error(err.response?.data?.message || "Invalid or expired link");
