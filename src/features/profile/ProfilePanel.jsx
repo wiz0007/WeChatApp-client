@@ -8,7 +8,8 @@ import {
   FaUserEdit,
 } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-import api, { API_URL, getAuthHeaders } from "../../api/axios";
+import api, { getAuthHeaders } from "../../api/axios";
+import { resolveAvatarUrl } from "../../utils/avatar";
 import styles from "./ProfilePanel.module.scss";
 
 const formatPresence = (profile) => {
@@ -71,9 +72,7 @@ const ProfilePanel = ({ profile, onProfileUpdated }) => {
 
   const resolvedAvatar = useMemo(() => {
     if (avatarPreview) return avatarPreview;
-    if (form.avatar?.startsWith("/uploads/")) return `${API_URL}${form.avatar}`;
-    if (form.avatar) return form.avatar;
-    return "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+    return resolveAvatarUrl(form.avatar);
   }, [avatarPreview, form.avatar]);
 
   const handleChange = (event) => {

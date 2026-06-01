@@ -9,6 +9,7 @@ import {
 import styles from "./ChatList.module.scss";
 import api, { getAuthHeaders } from "../../api/axios";
 import { HELP_BOT_CHAT } from "../../features/welcomeBot/helpBotConfig";
+import { resolveAvatarUrl } from "../../utils/avatar";
 
 const formatStatus = (user) => {
   if (user.type === "bot") return "Helper";
@@ -119,7 +120,7 @@ const ChatList = ({
             className={styles.mobileProfile}
             onClick={onOpenProfile}
           >
-            <FaUserCircle />
+            <img src={resolveAvatarUrl(currentUser?.avatar)} alt="profile" />
           </button>
           <button
             type="button"
@@ -178,7 +179,7 @@ const ChatList = ({
               onClick={() => handleSelectUser(user)}
             >
               <img
-                src={user.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+                src={resolveAvatarUrl(user.avatar)}
                 alt={user.name}
               />
               <div className={styles.chatDetails}>

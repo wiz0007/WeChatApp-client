@@ -14,6 +14,7 @@ import styles from "./ChatWindow.module.scss";
 import { API_URL, getAuthHeaders } from "../../api/axios";
 import WelcomeBot from "../../features/welcomeBot/WelcomeBot";
 import ProfilePanel from "../../features/profile/ProfilePanel";
+import { resolveAvatarUrl } from "../../utils/avatar";
 
 const SOCKET_URL = API_URL;
 let socket;
@@ -45,6 +46,7 @@ const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
   );
   const chatName = otherParticipant?.name || chat?.name || "Chat";
   const presenceText = chat?.type === "bot" ? "help assistant" : formatPresence(otherParticipant);
+  const chatAvatar = resolveAvatarUrl(otherParticipant?.avatar || chat?.avatar);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -288,7 +290,7 @@ const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
             </button>
           )}
           <img
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            src={resolveAvatarUrl(chat.avatar)}
             alt={chat.name}
             className={styles.avatar}
           />
@@ -312,7 +314,7 @@ const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
             </button>
           )}
           <img
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            src={resolveAvatarUrl(chat.avatar)}
             alt={chat.name}
             className={styles.avatar}
           />
@@ -335,7 +337,7 @@ const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
           </button>
         )}
         <img
-          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          src={chatAvatar}
           alt={chatName}
           className={styles.avatar}
         />

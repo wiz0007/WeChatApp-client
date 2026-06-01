@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import styles from "./Sidebar.module.scss";
 import api, { getAuthHeaders } from "../../api/axios";
+import { resolveAvatarUrl } from "../../utils/avatar";
 
 const Sidebar = ({ currentUser, onSelectBot, onSelectProfile }) => {
   const icons = [
@@ -65,7 +66,7 @@ const Sidebar = ({ currentUser, onSelectBot, onSelectProfile }) => {
         onClick={onSelectProfile}
         >
         <img
-          src={currentUser?.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+          src={resolveAvatarUrl(currentUser?.avatar)}
           alt="profile"
         />
       </motion.div>

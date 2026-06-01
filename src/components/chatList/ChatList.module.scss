@@ -34,6 +34,17 @@
   cursor: pointer;
 }
 
+.mobileProfile {
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+}
+
 .mobileBrand {
   border: none;
   background: transparent;
