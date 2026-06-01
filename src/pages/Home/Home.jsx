@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/sidebar/Sidebar";
 import ChatList from "../../components/chatList/ChatList";
@@ -10,10 +10,12 @@ import styles from "./Home.module.scss";
 const MOBILE_BREAKPOINT = 900;
 
 const Home = () => {
-  const currentUser = JSON.parse(localStorage.getItem("wechatUser") || "null");
-  const profileView = buildProfileView(currentUser);
   const initialIsMobile =
     typeof window !== "undefined" ? window.innerWidth <= MOBILE_BREAKPOINT : false;
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("wechatUser") || "null")
+  );
+  const profileView = useMemo(() => buildProfileView(currentUser), [currentUser]);
   const [selectedChat, setSelectedChat] = useState(HELP_BOT_CHAT);
   const [isMobile, setIsMobile] = useState(initialIsMobile);
 
@@ -32,6 +34,12 @@ const Home = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleProfileUpdated = (updatedUser) => {
+    localStorage.setItem("wechatUser", JSON.stringify(updatedUser));
+    setCurrentUser(updatedUser);
+    setSelectedChat(buildProfileView(updatedUser));
+  };
+
   const showListOnMobile = isMobile && !selectedChat;
   const showChatOnMobile = isMobile && Boolean(selectedChat);
 
@@ -46,6 +54,7 @@ const Home = () => {
         transition={{ duration: 0.5 }}
       >
         <Sidebar
+          currentUser={currentUser}
           onSelectBot={() => setSelectedChat(HELP_BOT_CHAT)}
           onSelectProfile={() => setSelectedChat(profileView)}
         />
@@ -60,6 +69,7 @@ const Home = () => {
         transition={{ delay: 0.1, duration: 0.5 }}
       >
         <ChatList
+          currentUser={currentUser}
           onSelectChat={setSelectedChat}
           isMobile={isMobile}
           onOpenHelper={() => setSelectedChat(HELP_BOT_CHAT)}
@@ -79,6 +89,7 @@ const Home = () => {
           chat={selectedChat}
           isMobile={isMobile}
           onBack={() => setSelectedChat(null)}
+          onProfileUpdated={handleProfileUpdated}
         />
       </motion.div>
     </div>

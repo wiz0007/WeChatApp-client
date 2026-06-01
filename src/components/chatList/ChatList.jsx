@@ -23,6 +23,7 @@ const formatStatus = (user) => {
 };
 
 const ChatList = ({
+  currentUser,
   onSelectChat,
   isMobile = false,
   onOpenHelper,
@@ -32,7 +33,6 @@ const ChatList = ({
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const currentUser = JSON.parse(localStorage.getItem("wechatUser") || "null");
 
   const fetchUsers = async () => {
     const token = localStorage.getItem("wechatToken");
@@ -178,7 +178,7 @@ const ChatList = ({
               onClick={() => handleSelectUser(user)}
             >
               <img
-                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                src={user.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                 alt={user.name}
               />
               <div className={styles.chatDetails}>

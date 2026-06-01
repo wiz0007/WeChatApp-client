@@ -11,7 +11,7 @@ import {
 import styles from "./Sidebar.module.scss";
 import api, { getAuthHeaders } from "../../api/axios";
 
-const Sidebar = ({ onSelectBot, onSelectProfile }) => {
+const Sidebar = ({ currentUser, onSelectBot, onSelectProfile }) => {
   const icons = [
     { id: 1, icon: <FaCommentDots />, label: "Chats" },
     { id: 2, icon: <FaUsers />, label: "Groups" },
@@ -63,9 +63,9 @@ const Sidebar = ({ onSelectBot, onSelectProfile }) => {
         whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.2 }}
         onClick={onSelectProfile}
-      >
+        >
         <img
-          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          src={currentUser?.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
           alt="profile"
         />
       </motion.div>

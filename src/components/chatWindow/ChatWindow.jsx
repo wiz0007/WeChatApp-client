@@ -30,7 +30,7 @@ const formatPresence = (participant) => {
   })}`;
 };
 
-const ChatWindow = ({ chat, isMobile = false, onBack }) => {
+const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -321,7 +321,7 @@ const ChatWindow = ({ chat, isMobile = false, onBack }) => {
             <p>account section</p>
           </div>
         </header>
-        <ProfilePanel profile={chat} />
+        <ProfilePanel profile={chat} onProfileUpdated={onProfileUpdated} />
       </div>
     );
   }
