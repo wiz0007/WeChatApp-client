@@ -12,12 +12,19 @@ import styles from "./Sidebar.module.scss";
 import api, { getAuthHeaders } from "../../api/axios";
 import { resolveAvatarUrl } from "../../utils/avatar";
 
-const Sidebar = ({ currentUser, onSelectBot, onSelectProfile }) => {
+const Sidebar = ({
+  currentUser,
+  onSelectBot,
+  onSelectProfile,
+  onOpenDiscover,
+  onOpenRequests,
+  onOpenPrivacy,
+}) => {
   const icons = [
-    { id: 1, icon: <FaCommentDots />, label: "Chats" },
-    { id: 2, icon: <FaUsers />, label: "Groups" },
-    { id: 3, icon: <FaBell />, label: "Notifications" },
-    { id: 4, icon: <FaCog />, label: "Settings" },
+    { id: 1, icon: <FaCommentDots />, label: "Helper", onClick: onSelectBot },
+    { id: 2, icon: <FaUsers />, label: "Discover", onClick: onOpenDiscover },
+    { id: 3, icon: <FaBell />, label: "Requests", onClick: onOpenRequests },
+    { id: 4, icon: <FaCog />, label: "Privacy", onClick: onOpenPrivacy },
   ];
 
   const handleLogout = async () => {
@@ -44,14 +51,14 @@ const Sidebar = ({ currentUser, onSelectBot, onSelectProfile }) => {
       </div>
 
       <nav className={styles.nav}>
-        {icons.map((item, idx) => (
+        {icons.map((item) => (
           <motion.div
             key={item.id}
             className={styles.iconWrapper}
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300 }}
-            onClick={item.id === 1 ? onSelectBot : undefined}
+            onClick={item.onClick}
           >
             {item.icon}
             <span className={styles.tooltip}>{item.label}</span>

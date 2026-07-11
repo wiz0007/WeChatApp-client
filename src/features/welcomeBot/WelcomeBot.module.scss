@@ -3,18 +3,54 @@
 .container {
   @include Flex(column, space-between, stretch);
   height: 100%;
+  min-height: 0;
   background-color: #111b21;
-  padding: 1.2rem;
   color: #e9edef;
 }
 
-.chatBox {
+.assistantPanel {
   flex: 1;
+  min-height: 0;
+  padding: 1.25rem 1.5rem;
+  overflow: hidden;
+}
+
+.helperIntro {
+  @include Flex(row, flex-start, center);
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+  color: #adbac3;
+
+  span {
+    display: block;
+    color: #e9edef;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0.2rem 0 0;
+    font-size: 0.85rem;
+  }
+}
+
+.helperIcon {
+  @include Flex(row, center, center);
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background-color: rgba(0, 168, 132, 0.14);
+  color: #06cf9c;
+  font-size: 1rem;
+}
+
+.chatBox {
+  height: calc(100% - 3.6rem);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  padding-right: 0.3rem;
+  gap: 0.85rem;
+  padding-right: 0.35rem;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -27,49 +63,121 @@
 }
 
 .message {
-  max-width: 75%;
-  padding: 0.6rem 0.9rem;
-  border-radius: 10px;
+  max-width: min(38rem, 78%);
+  padding: 0.7rem 0.95rem;
+  border-radius: 8px;
   word-wrap: break-word;
-  font-size: 0.9rem;
+  line-height: 1.45;
+  font-size: 0.94rem;
 }
 
 .bot {
   align-self: flex-start;
   background-color: #202c33;
+  color: #f2f6f8;
 }
 
 .user {
   align-self: flex-end;
   background-color: #00a884;
-  color: white;
+  color: #ffffff;
+}
+
+.helperDock {
+  border-top: 1px solid rgba(134, 150, 160, 0.18);
+  background-color: #111b21;
+  padding: 0.9rem 1.5rem 1.15rem;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-bottom: 0.85rem;
+}
+
+.quickAction {
+  @include Flex(row, center, center);
+  gap: 0.5rem;
+  min-height: 2.55rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(134, 150, 160, 0.24);
+  border-radius: 8px;
+  background-color: #17262e;
+  color: #dbe7ec;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: normal;
+  text-align: center;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+
+  span {
+    @include Flex(row, center, center);
+    flex: 0 0 auto;
+    color: #06cf9c;
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    border-color: rgba(6, 207, 156, 0.48);
+    background-color: #1d3139;
+    color: #ffffff;
+  }
 }
 
 .inputBar {
   @include Flex(row, space-between, center);
+  min-height: 3rem;
   background-color: #202c33;
-  border-radius: 25px;
-  padding: 0.4rem 0.8rem;
-  margin-top: 1rem;
+  border: 1px solid rgba(134, 150, 160, 0.16);
+  border-radius: 8px;
+  padding: 0.35rem 0.45rem 0.35rem 0.9rem;
 
   input {
     flex: 1;
+    min-width: 0;
     border: none;
     outline: none;
     background: transparent;
     color: #e9edef;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
+    font-size: 0.94rem;
+    padding: 0.55rem 0.65rem;
+
+    &::placeholder {
+      color: #8696a0;
+    }
   }
 
   button {
-    background-color: #00a884;
+    @include Flex(row, center, center);
+    width: 2.35rem;
+    height: 2.35rem;
     border: none;
-    color: white;
-    border-radius: 20px;
-    padding: 0.4;
+    border-radius: 50%;
+    background-color: #00a884;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.9rem;
+
     &:hover {
       background-color: #06cf9c;
     }
+  }
+}
+
+@media (max-width: 780px) {
+  .assistantPanel,
+  .helperDock {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .quickActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .message {
+    max-width: 88%;
   }
 }

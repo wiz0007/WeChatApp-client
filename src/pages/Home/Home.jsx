@@ -5,6 +5,7 @@ import ChatList from "../../components/chatList/ChatList";
 import ChatWindow from "../../components/chatWindow/ChatWindow";
 import { HELP_BOT_CHAT } from "../../features/welcomeBot/helpBotConfig";
 import { buildProfileView } from "../../features/profile/profileView";
+import { buildSocialView } from "../../features/social/socialView";
 import styles from "./Home.module.scss";
 
 const MOBILE_BREAKPOINT = 900;
@@ -40,6 +41,10 @@ const Home = () => {
     setSelectedChat(buildProfileView(updatedUser));
   };
 
+  const openSocialView = (tab) => {
+    setSelectedChat(buildSocialView(tab));
+  };
+
   const showListOnMobile = isMobile && !selectedChat;
   const showChatOnMobile = isMobile && Boolean(selectedChat);
 
@@ -57,6 +62,9 @@ const Home = () => {
           currentUser={currentUser}
           onSelectBot={() => setSelectedChat(HELP_BOT_CHAT)}
           onSelectProfile={() => setSelectedChat(profileView)}
+          onOpenDiscover={() => openSocialView("discover")}
+          onOpenRequests={() => openSocialView("requests")}
+          onOpenPrivacy={() => openSocialView("privacy")}
         />
       </motion.div>
 
@@ -74,6 +82,9 @@ const Home = () => {
           isMobile={isMobile}
           onOpenHelper={() => setSelectedChat(HELP_BOT_CHAT)}
           onOpenProfile={() => setSelectedChat(profileView)}
+          onOpenDiscover={() => openSocialView("discover")}
+          onOpenRequests={() => openSocialView("requests")}
+          onOpenPrivacy={() => openSocialView("privacy")}
         />
       </motion.div>
 

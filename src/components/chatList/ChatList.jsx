@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  FaBell,
   FaCog,
+  FaCompass,
   FaQuestionCircle,
   FaSearch,
   FaSignOutAlt,
@@ -10,17 +12,12 @@ import styles from "./ChatList.module.scss";
 import api, { getAuthHeaders } from "../../api/axios";
 import { HELP_BOT_CHAT } from "../../features/welcomeBot/helpBotConfig";
 import { resolveAvatarUrl } from "../../utils/avatar";
+import { formatLastSeen } from "../../utils/time";
 
 const formatStatus = (user) => {
   if (user.type === "bot") return "Helper";
   if (user.isOnline) return "Online";
-  if (!user.lastSeen) return "Offline";
-
-  const date = new Date(user.lastSeen);
-  return `Last seen ${date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}`;
+  return formatLastSeen(user.lastSeen);
 };
 
 const ChatList = ({
@@ -29,6 +26,9 @@ const ChatList = ({
   isMobile = false,
   onOpenHelper,
   onOpenProfile,
+  onOpenDiscover,
+  onOpenRequests,
+  onOpenPrivacy,
 }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
@@ -151,6 +151,36 @@ const ChatList = ({
             <FaQuestionCircle />
             <span>Open Helper</span>
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              setShowMobileMenu(false);
+              onOpenDiscover?.();
+            }}
+          >
+            <FaCompass />
+            <span>Discover</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setShowMobileMenu(false);
+              onOpenRequests?.();
+            }}
+          >
+            <FaUserCircle />
+            <span>Requests</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setShowMobileMenu(false);
+              onOpenPrivacy?.();
+            }}
+          >
+            <FaCog />
+            <span>Privacy</span>
+          </button>
           <button type="button" onClick={handleLogout}>
             <FaSignOutAlt />
             <span>Logout</span>
@@ -208,7 +238,9 @@ const ChatList = ({
             </div>
           ))
         ) : (
-          <p className={styles.noUsers}>No users found.</p>
+          <p className={styles.noUsers}>
+            No approved chats yet. Use Discover to find people by username.
+          </p>
         )}
       </div>
 
@@ -225,17 +257,18 @@ const ChatList = ({
           <button
             type="button"
             className={`${styles.footerItem} ${styles.footerBrand}`}
-            onClick={onOpenHelper}
+            onClick={onOpenDiscover}
           >
-            <span>WeChat</span>
+            <FaCompass />
+            <span>Discover</span>
           </button>
           <button
             type="button"
             className={styles.footerItem}
-            onClick={() => setShowMobileMenu((prev) => !prev)}
+            onClick={onOpenRequests}
           >
-            <FaCog />
-            <span>Settings</span>
+            <FaBell />
+            <span>Requests</span>
           </button>
         </div>
       )}

@@ -9,12 +9,15 @@ import {
   FaFileAlt,
   FaCheck,
   FaCheckDouble,
+  FaUserFriends,
 } from "react-icons/fa";
 import styles from "./ChatWindow.module.scss";
 import { API_URL, getAuthHeaders } from "../../api/axios";
 import WelcomeBot from "../../features/welcomeBot/WelcomeBot";
 import ProfilePanel from "../../features/profile/ProfilePanel";
+import SocialHub from "../../features/social/SocialHub";
 import { resolveAvatarUrl } from "../../utils/avatar";
+import { formatLastSeen } from "../../utils/time";
 
 const SOCKET_URL = API_URL;
 let socket;
@@ -22,13 +25,7 @@ let socket;
 const formatPresence = (participant) => {
   if (!participant) return "";
   if (participant.isOnline) return "online";
-  if (!participant.lastSeen) return "offline";
-
-  const date = new Date(participant.lastSeen);
-  return `last seen ${date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}`;
+  return formatLastSeen(participant.lastSeen).toLowerCase();
 };
 
 const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
@@ -141,7 +138,7 @@ const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
   };
 
   useEffect(() => {
-    if (chat?.type === "bot") {
+    if (chat?.type === "bot" || chat?.type === "profile" || chat?.type === "social") {
       return;
     }
 
@@ -324,6 +321,28 @@ const ChatWindow = ({ chat, isMobile = false, onBack, onProfileUpdated }) => {
           </div>
         </header>
         <ProfilePanel profile={chat} onProfileUpdated={onProfileUpdated} />
+      </div>
+    );
+  }
+
+  if (chat?.type === "social") {
+    return (
+      <div className={styles.chatWindow}>
+        <header className={styles.header}>
+          {isMobile && (
+            <button className={styles.backButton} onClick={onBack} type="button">
+              <FaArrowLeft />
+            </button>
+          )}
+          <div className={styles.socialHeaderIcon}>
+            <FaUserFriends />
+          </div>
+          <div className={styles.headerCopy}>
+            <h4>{chat.name}</h4>
+            <p>discover and manage access</p>
+          </div>
+        </header>
+        <SocialHub initialTab={chat.tab} currentUser={user} />
       </div>
     );
   }

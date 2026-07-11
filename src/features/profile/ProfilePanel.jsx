@@ -10,17 +10,12 @@ import {
 import { toast } from "react-hot-toast";
 import api, { getAuthHeaders } from "../../api/axios";
 import { resolveAvatarUrl } from "../../utils/avatar";
+import { formatLastSeen } from "../../utils/time";
 import styles from "./ProfilePanel.module.scss";
 
 const formatPresence = (profile) => {
   if (profile?.isOnline) return "Online now";
-  if (!profile?.lastSeen) return "Offline";
-
-  const date = new Date(profile.lastSeen);
-  return `Last seen ${date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}`;
+  return formatLastSeen(profile?.lastSeen);
 };
 
 const ProfilePanel = ({ profile, onProfileUpdated }) => {

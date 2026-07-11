@@ -69,6 +69,18 @@
   padding: 0.35rem;
 }
 
+.socialHeaderIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 168, 132, 0.14);
+  color: $color-accent;
+  flex-shrink: 0;
+}
+
 .messages {
   flex: 1;
   min-height: 0;
