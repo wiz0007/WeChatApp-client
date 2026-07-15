@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
+import io from "socket.io-client";
 import {
   FaBell,
   FaCheck,
@@ -29,6 +30,7 @@ import {
   unblockUser,
   updatePrivacySettings,
 } from "../../api/socialApi";
+import { API_URL } from "../../api/axios";
 import { resolveAvatarUrl } from "../../utils/avatar";
 import { formatLastSeen } from "../../utils/time";
 import styles from "./SocialHub.module.scss";
@@ -137,6 +139,40 @@ const SocialHub = ({ initialTab = "discover", currentUser }) => {
       ...(currentUser.privacy || {}),
     });
   }, [currentUser]);
+
+  useEffect(() => {
+    if (!currentUser?._id) return;
+    fetchNotifications().catch(() => {});
+  }, [currentUser?._id]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("wechatToken");
+    if (!token || !currentUser?._id) return undefined;
+
+    const notificationSocket = io(API_URL, {
+      transports: ["websocket"],
+      reconnection: true,
+      auth: { token },
+    });
+
+    notificationSocket.on("notification:new", ({ notification, unreadCount: nextUnreadCount }) => {
+      if (notification) {
+        setNotifications((prev) => [
+          notification,
+          ...prev.filter((item) => item._id !== notification._id),
+        ]);
+        toast(notification.title || "New notification");
+      }
+
+      if (typeof nextUnreadCount === "number") {
+        setUnreadCount(nextUnreadCount);
+      }
+    });
+
+    return () => {
+      notificationSocket.disconnect();
+    };
+  }, [currentUser?._id]);
 
   const fetchConnections = async () => {
     const [accepted, pending] = await Promise.all([
@@ -320,7 +356,7 @@ const SocialHub = ({ initialTab = "discover", currentUser }) => {
           <h2>Discover, connect, and request chats</h2>
         </div>
         <div className={styles.headerPill}>
-          {requestCount} pending · {unreadCount} unread
+          {requestCount} pending - {unreadCount} unread
         </div>
       </header>
 
@@ -661,3 +697,6 @@ const SocialHub = ({ initialTab = "discover", currentUser }) => {
 };
 
 export default SocialHub;
+
+
+
